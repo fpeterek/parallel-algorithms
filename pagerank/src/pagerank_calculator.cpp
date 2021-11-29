@@ -28,6 +28,10 @@ PagerankCalculator::PagerankCalculator(Graph & graph, const std::uint64_t iterat
         splits.emplace_back(begin, end);
     }
 
+    nextPageranks.reserve(graph.nodeCount());
+    for (std::size_t i = 0; i < graph.nodeCount(); ++i) {
+        nextPageranks.emplace_back(0.0);
+    }
 }
 
 void PagerankCalculator::pagerankOnRange(std::pair<std::size_t, std::size_t> range) {
@@ -44,9 +48,8 @@ void PagerankCalculator::pagerankOnRange(std::pair<std::size_t, std::size_t> ran
         }
 
         // Increase pagerank by link weight of each node linking to the current node
-        for (const auto nodeId : inverted->second) {
-            Node & linkingNode = graph[nodeId];
-            node.addToRank(linkingNode.linkValue());
+        for (const auto linkingId : inverted->second) {
+            nextPageranks[i] += graph[linkingId].linkValue();
         }
     }
 }
@@ -56,20 +59,8 @@ void PagerankCalculator::danglingAndApplyOnRange(std::pair<std::size_t, std::siz
 
     for (std::size_t i = begin; i <= end; ++i) {
         Node & node = graph[i];
-        node.addToRank(danglingWeight);
-        // Since no calculations with pageranks are performed beyond this point
-        // of the current iteration, we can apply the new ranks immediately and
-        // save ourselves one pass through the entire graph, making the method
-        // applyRanks() redundant
-        node.applyRank();
-    }
-}
-
-void PagerankCalculator::applyRanksOnRange(std::pair<std::size_t, std::size_t> range) {
-    const auto [begin, end] = range;
-
-    for (std::size_t i = begin; i <= end; ++i) {
-        graph[i].applyRank();
+        node.setPagerank(nextPageranks[i] + danglingWeight);
+        nextPageranks[i] = 0;
     }
 }
 
@@ -90,10 +81,6 @@ void PagerankCalculator::applyDanglingAndApplyPR() {
     parallelize([this](std::pair<std::size_t, std::size_t> range) { danglingAndApplyOnRange(range); });
 }
 
-void PagerankCalculator::applyRanks() {
-    parallelize([this](std::pair<std::size_t, std::size_t> range) { applyRanksOnRange(range); });
-}
-
 void PagerankCalculator::calcPageranks() {
 
     buildInvertedIndex();
@@ -112,8 +99,7 @@ void PagerankCalculator::initializeOnRange(std::pair<std::size_t, std::size_t> r
     const double init = 1.0 / graph.nodeCount();
 
     for (std::size_t i = begin; i <= end; ++i) {
-        graph[i].addToRank(init);
-        graph[i].applyRank();
+        graph[i].setPagerank(init);
     }
 }
 

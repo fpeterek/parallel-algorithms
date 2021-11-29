@@ -4,11 +4,6 @@
 
 #include "node.hpp"
 
-void Node::applyRank() {
-    _pagerank = _nextrank;
-    _nextrank = 0;
-}
-
 Node::Node(const std::uint64_t id, std::vector<std::uint64_t> links) : _id(id), _links(std::move(links)) { }
 
 std::uint64_t Node::id() const {
@@ -23,8 +18,8 @@ double Node::pagerank() const {
     return _pagerank;
 }
 
-void Node::addToRank(double delta) {
-    _nextrank += delta;
+void Node::setPagerank(const double newRank) {
+    _pagerank = newRank;
 }
 
 double Node::linkValue() const {
@@ -36,14 +31,12 @@ std::size_t Node::linkCount() const {
 }
 
 Node::Node(Node && other) noexcept :
-    _id(other._id), _links(std::move(other._links)),
-    _pagerank(other._pagerank), _nextrank(other._nextrank) { }
+    _id(other._id), _links(std::move(other._links)), _pagerank(other._pagerank) { }
 
 Node & Node::operator=(Node && other) noexcept {
     _id = other._id;
     _links = std::move(other._links);
     _pagerank = other._pagerank;
-    _nextrank = other._nextrank;
     return *this;
 }
 

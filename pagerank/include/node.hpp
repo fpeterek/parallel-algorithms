@@ -15,7 +15,6 @@ class Node {
     std::vector<std::uint64_t> _links;
 
     double _pagerank = 0.0;
-    double _nextrank = 0.0;
 
 public:
     Node(std::uint64_t id, std::vector<std::uint64_t> links);
@@ -32,8 +31,7 @@ public:
     std::size_t linkCount() const;
     bool isDangling() const;
 
-    void addToRank(double delta);
-    void applyRank();
+    void setPagerank(double pagerank);
 
 };
 

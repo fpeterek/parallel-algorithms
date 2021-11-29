@@ -3,8 +3,8 @@
 ## Dependencies
 
 * CMake
-* A reasonable compiler (MSVC may not suffice due to my abuntant usage of `iso646.h`) supporting C++17
-* `pthread`, if you wish to use the provided CMake config
+* A compiler supporting C++17 (including `iso646.h`)
+* `pthread`, if you wish to make use of the provided CMake config
     * Alternatively, you can modify the CMake config and provide your own multithreading solution
 
 ## Compilation
