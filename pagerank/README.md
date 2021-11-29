@@ -66,25 +66,25 @@ a certain argument, you must also specify all preceding arguments.
 ```
 
 ```sh
-❯ time ./pagerank in/medium.graph 10 5 minimal
+# Generate a large dataset (takes some time)
+❯ ./scripts/gen.py in/largest.graph 1000000 100  
+
+# Test multithreading
+❯ time ./pagerank in/largest.graph 10 1 minimal
+Graph {size=1000000, dangling=9951}
+
 Sum of pageranks: 1
-./pagerank in/medium.graph 10 5  0.01s user 0.01s system 127% cpu 0.013 total
-❯ time ./pagerank in/above_medium.graph 10 5 minimal
+./pagerank in/largest.graph 10 1 minimal  93.36s user 0.65s system 99% cpu 1:34.49 total
+
+❯ time ./pagerank in/largest.graph 10 10 minimal
+Graph {size=1000000, dangling=9951}
+
 Sum of pageranks: 1
-./pagerank in/above_medium.graph 10 5 minimal  0.21s user 0.01s system 140% cpu 0.151 total
-❯ time ./pagerank in/above_medium.graph 10 1 minimal
+./pagerank in/largest.graph 10 10 minimal  96.32s user 0.78s system 176% cpu 55.001 total
+
+❯ time ./pagerank in/largest.graph 10 20 minimal
+Graph {size=1000000, dangling=9951}
+
 Sum of pageranks: 1
-./pagerank in/above_medium.graph 10 1 minimal  0.21s user 0.01s system 99% cpu 0.214 total
-❯ time ./pagerank in/rather_big.graph 10 1 minimal
-Sum of pageranks: 1
-./pagerank in/rather_big.graph 10 1 minimal  20.52s user 0.19s system 99% cpu 20.729 total
-❯ time ./pagerank in/rather_big.graph 10 8 minimal
-Sum of pageranks: 1
-./pagerank in/rather_big.graph 10 8 minimal  20.16s user 0.21s system 153% cpu 13.241 total
-❯ time ./pagerank in/rather_big.graph 10 16 minimal
-Sum of pageranks: 1
-./pagerank in/rather_big.graph 10 16 minimal  20.23s user 0.19s system 155% cpu 13.170 total
-❯ time ./pagerank in/rather_big.graph 10 20 minimal
-Sum of pageranks: 1
-./pagerank in/rather_big.graph 10 20 minimal  20.47s user 0.19s system 154% cpu 13.331 total
+./pagerank in/largest.graph 10 20 minimal  98.27s user 0.66s system 188% cpu 52.467 total
 ```

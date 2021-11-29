@@ -17,12 +17,10 @@ def gen(page_count: int, max_links: int) -> list[Node]:
 
     for node in nodes:
         link_count = random.randint(0, max_links)
-        random.shuffle(link_list)
-        it = iter(link_list)
-        while len(node.links) != link_count:
-            val = next(it)
-            if val != node.id:
-                node.links.append(val)
+
+        link_list.remove(node.id)
+        node.links = random.sample(link_list, link_count)
+        link_list.append(node.id)
 
     return nodes
 
