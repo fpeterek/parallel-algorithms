@@ -13,4 +13,7 @@ CMakeCache.txt
 *.sln
 Testing
 out/
+__pycache__/
+*.py[co]
+venv/
 
