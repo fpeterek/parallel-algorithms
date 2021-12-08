@@ -1,6 +1,7 @@
 import multiprocessing as mp
 
 import globals
+from message import Message
 
 
 def setup(points, processes):
@@ -13,16 +14,17 @@ def setup(points, processes):
 def shutdown(processes):
     globals.data = None
 
-    for _ in processes:
-        globals.in_queue.put(False)
-    for p in processes:
-        p.join()
-        p.close()
+    if processes is not None:
+        for _ in processes:
+            globals.in_queue.put(Message(msg_type=Message.Type.STOP))
+        for p in processes:
+            p.join()
+            p.close()
 
-    if globals.in_queue:
+    if globals.in_queue is not None:
         globals.in_queue.close()
         globals.in_queue = None
-    if globals.out_queue:
+    if globals.out_queue is not None:
         globals.out_queue.close()
         globals.out_queue = None
 

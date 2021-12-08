@@ -8,7 +8,7 @@ class Message:
         CENTROIDS = 2
         STOP = 3
 
-    def __init__(self, msg_type: Type, data: Optional[Any], order: int = -1):
+    def __init__(self, msg_type: Type, data: Optional[Any] = None, order: int = -1):
         self.type = msg_type
         self.data = data
         self.order = order

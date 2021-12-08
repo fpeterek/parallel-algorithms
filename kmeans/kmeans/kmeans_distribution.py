@@ -1,4 +1,5 @@
 import math
+import multiprocessing as mp
 
 import globals
 from kmeans_core import calc_centroid, distribute_points
@@ -14,7 +15,7 @@ def calc_centroids_in_parallel(clusters):
         globals.in_queue.put(Message(msg_type=Message.Type.CENTROIDS, data=cluster, order=idx))
     centroids = [globals.out_queue.get() for _ in range(len(clusters))]
     centroids.sort(key=lambda msg: msg.order)
-    centroids = [msg.data for msg in centroids]
+    return [msg.data for msg in centroids]
 
 
 def calc_ranges(points, processes) -> list[range]:
@@ -31,8 +32,7 @@ def calc_ranges(points, processes) -> list[range]:
 
 
 def distribute_in_serial(centroids, points, _):
-    res = distribute_points(centroids, range(len(points)))
-    return res
+    return distribute_points(centroids, range(len(points)))
 
 
 def merge_results(messages: list[Message]) -> list[list]:
@@ -41,7 +41,7 @@ def merge_results(messages: list[Message]) -> list[list]:
         for idx, cluster in enumerate(msg.data):
             if len(res) <= idx:
                 res.append([])
-            res[idx] += cluster.data
+            res[idx] += cluster
     return res
 
 
@@ -53,3 +53,38 @@ def distribute_in_parallel(centroids, points, processes):
     res = [globals.out_queue.get() for _ in range(len(splits))]
 
     return merge_results(res)
+
+
+def distribute_message(msg: Message):
+    centroids, split = msg.data
+    clusters = distribute_points(centroids, split)
+
+    if globals.out_queue is not None:
+        globals.out_queue.put(Message(msg_type=Message.Type.CLUSTERIZE, data=clusters))
+
+
+def centroid_message(msg: Message):
+    cluster = msg.data
+    centroid = calc_centroid(cluster)
+
+    if globals.out_queue is not None:
+        globals.out_queue.put(Message(msg_type=Message.Type.CENTROIDS, data=centroid, order=msg.order))
+
+
+def run_process():
+    fns = {Message.Type.CLUSTERIZE: distribute_message, Message.Type.CENTROIDS: centroid_message}
+    while True:
+        msg: Message = globals.in_queue.get()
+        if msg.type in fns:
+            fns[msg.type](msg)
+        if msg.type == Message.Type.STOP:
+            return
+
+
+def create_processes(num_processes):
+    if num_processes < 2:
+        return []
+    processes = [mp.Process(target=run_process) for _ in range(num_processes)]
+    for p in processes:
+        p.start()
+    return processes

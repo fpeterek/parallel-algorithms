@@ -33,8 +33,6 @@ def distribute_points(centroids, indices):
                 min_centroid = idx
         clusters[min_centroid].append(point)
 
-    if globals.out_queue is not None:
-        globals.out_queue.put(clusters)
     return clusters
 
 
