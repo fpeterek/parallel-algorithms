@@ -1,17 +1,40 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.5.31'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.0'
     id 'java'
 }
 
 group 'org.fpeterek.pa'
 version '1.0'
 
+compileJava {
+    targetCompatibility = 17
+}
+
+compileTestJava {
+    targetCompatibility = 17
+}
+
+compileKotlin {
+    targetCompatibility = 17
+    kotlinOptions {
+        jvmTarget = 17
+    }
+}
+
+compileTestKotlin {
+    targetCompatibility = 17
+    kotlinOptions {
+        jvmTarget = 17
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.0'
+    implementation 'commons-cli:commons-cli:1.5.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
