@@ -1,7 +1,7 @@
 package org.fpeterek.pa.im.graph
 
 
-class Node(val id: Int, private val _links: MutableList<Link>) {
+class Node(val id: Int, private val _links: MutableList<Link> = mutableListOf()) {
 
     var frozen = false
         set(value) {
