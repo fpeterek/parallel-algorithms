@@ -6,7 +6,7 @@ import org.fpeterek.pa.im.cli.CLIOptions.contains
 import org.fpeterek.pa.im.cli.CLIOptions.getInt
 import org.fpeterek.pa.im.cli.CLIOptions.getString
 import org.fpeterek.pa.im.graph.gen.GraphGenerator
-import org.fpeterek.pa.im.graph.io.GraphIO.loadGraph
+import org.fpeterek.pa.im.graph.io.GraphIO.loadGraphFromPath
 import org.fpeterek.pa.im.graph.io.GraphIO.save
 
 fun generate(size: Int, outfile: String) = GraphGenerator.gen(size).let {
@@ -31,7 +31,7 @@ fun generate(cl: CommandLine) {
 
 fun getSeeds(infile: String, numSeeds: Int, threads: Int) {
 
-    val graph = infile.loadGraph()
+    val graph = infile.loadGraphFromPath()
     val avgLinks = graph.nodes.sumOf { it.links.size } / graph.nodes.size.toDouble()
     println(avgLinks)
 

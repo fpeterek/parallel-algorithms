@@ -10,7 +10,7 @@ object CLIOptions {
     operator fun CommandLine.contains(opt: String) = hasOption(opt)
 
     fun CommandLine.getInt(opt: String) = getOptionValue(opt).toInt()
-    fun CommandLine.getString(opt: String) = getOptionValue(opt)
+    fun CommandLine.getString(opt: String) = getOptionValue(opt)!!
 
     private fun createOption(name: String, fn: Option.Builder.() -> Unit) =
         Option.builder(name).apply(fn).build()!!

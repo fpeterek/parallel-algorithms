@@ -8,56 +8,56 @@ import kotlin.math.pow
 import kotlin.math.round
 import kotlin.random.Random
 
-object GraphGenerator {
+class GraphGenerator private constructor(private val size: Int) {
 
-    private class Generator(val size: Int) {
-        val linkSet = (0 until size).toMutableSet()
+    companion object {
+        fun gen(size: Int) = GraphGenerator(size).genGraph()
+    }
 
-        fun createNode(id: Int) = Node(id, mutableListOf())
+    private val linkSet = (0 until size).toMutableSet()
 
-        fun randomWeight() = round(Random.nextDouble(1.0) * 1000) / 1000
+    private fun createNode(id: Int) = Node(id, mutableListOf())
 
-        // Introduce bias towards lower link counts
-        // without completely removing the option of a node which
-        // links to every other node in the graph
-        fun randLinkCount() = round(2.0.pow(Random.nextDouble(log2(linkSet.size - 1.0)))).toInt()
+    private fun randomWeight() = round(Random.nextDouble(1.0) * 1000) / 1000
 
-        fun pickRandom(count: Int, excludeId: Int): List<Int> {
+    // Introduce bias towards lower link counts
+    // without completely removing the option of a node which
+    // links to every other node in the graph
+    private fun randLinkCount() =
+        round(2.0.pow(Random.nextDouble(log2(linkSet.size - 1.0)))).toInt()
 
-            linkSet.remove(excludeId)
-            val links = (0 until count).map {
-                val rand = linkSet.random()
-                linkSet.remove(rand)
-                rand
-            }
-            linkSet.addAll(links)
-            linkSet.add(excludeId)
+    private fun pickRandom(count: Int, excludeId: Int): List<Int> {
 
-            return links
+        linkSet.remove(excludeId)
+        val links = (0 until count).map {
+            val rand = linkSet.random()
+            linkSet.remove(rand)
+            rand
         }
+        linkSet.addAll(links)
+        linkSet.add(excludeId)
 
-        fun generateLinks(node: Node, all: List<Node>) {
-            val count = randLinkCount()
-            val links = pickRandom(count, node.id)
+        return links
+    }
 
-            links.forEach {
-                node.mutableLinks.add(Link(all[it], randomWeight()))
-            }
+    private fun generateLinks(node: Node, all: List<Node>) {
+        val count = randLinkCount()
+        val links = pickRandom(count, node.id)
 
+        links.forEach {
+            node.mutableLinks.add(Link(all[it], randomWeight()))
         }
-
-        fun genNodes() = (0 until size)
-            .map(::createNode)
-            .apply {
-                onEach {
-                    generateLinks(it, this)
-                    it.freeze()
-                }
-            }
-
-        fun genGraph() = Graph(genNodes())
 
     }
 
-    fun gen(size: Int) = Generator(size).genGraph()
+    private fun genNodes() = (0 until size)
+        .map(::createNode)
+        .apply {
+            onEach {
+                generateLinks(it, this)
+                it.freeze()
+            }
+        }
+
+    private fun genGraph() = Graph(genNodes())
 }

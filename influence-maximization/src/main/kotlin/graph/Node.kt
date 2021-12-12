@@ -16,7 +16,7 @@ class Node(val id: Int, private val _links: MutableList<Link> = mutableListOf())
 
     val mutableLinks: MutableList<Link>
         get() = if (frozen) {
-            throw RuntimeException("Access to mutable collection of a frozen node is forbidden")
+            throw RuntimeException("Access to mutable attribute of a frozen node is forbidden")
         } else {
             _links
         }

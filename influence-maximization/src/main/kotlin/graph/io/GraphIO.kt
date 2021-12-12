@@ -6,6 +6,6 @@ object GraphIO {
     fun load(filename: String) = GraphLoader.load(filename)
     fun write(graph: Graph, outfile: String) = GraphWriter.write(graph, outfile)
 
-    fun String.loadGraph() = load(this)
+    fun String.loadGraphFromPath() = load(this)
     fun Graph.save(outfile: String) = write(this, outfile)
 }
