@@ -6,6 +6,7 @@ import org.fpeterek.pa.im.graph.Node
 import kotlin.math.log2
 import kotlin.math.pow
 import kotlin.math.round
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class GraphGenerator private constructor(private val size: Int) {
@@ -18,13 +19,15 @@ class GraphGenerator private constructor(private val size: Int) {
 
     private fun createNode(id: Int) = Node(id, mutableListOf())
 
-    private fun randomWeight() = round(Random.nextDouble(1.0) * 1000) / 1000
+    private fun logRand(upperBound: Double) =
+        2.0.pow(Random.nextDouble(log2(upperBound)))
+
+    private fun randomWeight() = round(logRand(1000.0)) / 1000
 
     // Introduce bias towards lower link counts
     // without completely removing the option of a node which
     // links to every other node in the graph
-    private fun randLinkCount() =
-        round(2.0.pow(Random.nextDouble(log2(linkSet.size - 1.0)))).toInt()
+    private fun randLinkCount() = logRand(linkSet.size - 1.0).roundToInt()
 
     private fun pickRandom(count: Int, excludeId: Int): List<Int> {
 

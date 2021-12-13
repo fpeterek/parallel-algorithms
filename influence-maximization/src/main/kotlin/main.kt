@@ -10,8 +10,6 @@ import org.fpeterek.pa.im.graph.io.GraphIO.loadGraphFromPath
 import org.fpeterek.pa.im.graph.io.GraphIO.save
 
 fun generate(size: Int, outfile: String) = GraphGenerator.gen(size).let {
-    val avgLinks = it.nodes.sumOf { node -> node.links.size } / it.nodes.size
-    println(avgLinks)
     it.save(outfile)
 }
 
@@ -32,8 +30,8 @@ fun generate(cl: CommandLine) {
 fun getSeeds(infile: String, numSeeds: Int, threads: Int) {
 
     val graph = infile.loadGraphFromPath()
-    val avgLinks = graph.nodes.sumOf { it.links.size } / graph.nodes.size.toDouble()
-    println(avgLinks)
+    println("Seeds:")
+    SeedCalculator.getSeeds(graph, numSeeds).forEach { println(it.id) }
 
 }
 
@@ -57,7 +55,7 @@ fun getSeeds(cl: CommandLine) {
 fun main(args: Array<String>) = CLIOptions.parse(args).let { options ->
     when {
         CLIOptions.generate in options && CLIOptions.getSeeds in options -> {
-            println("Exclusive options '${CLIOptions.getSeeds}' and '${CLIOptions.generate}'")
+            println("Exclusive options '${CLIOptions.getSeedsLong}' and '${CLIOptions.generateLong}'")
         }
         CLIOptions.generate in options -> generate(options)
         CLIOptions.getSeeds in options -> getSeeds(options)

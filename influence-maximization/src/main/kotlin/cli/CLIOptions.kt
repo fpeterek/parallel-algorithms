@@ -59,20 +59,20 @@ object CLIOptions {
     }
 
     const val generate = "g"
-    const val randomGraphSize = "s"
+    const val randomGraphSize = "r"
     const val outfile = "o"
     const val getSeeds = "s"
     const val numSeeds = "n"
     const val infile = "i"
     const val threads = "t"
 
-    private const val generateLong = "generate"
-    private const val randomGraphSizeLong = "randomGraphSize"
-    private const val outfileLong = "outfile"
-    private const val getSeedsLong = "getSeeds"
-    private const val numSeedsLong = "numSeeds"
-    private const val infileLong = "infile"
-    private const val threadsLong = "threads"
+    const val generateLong = "generate"
+    const val randomGraphSizeLong = "randomGraphSize"
+    const val outfileLong = "outfile"
+    const val getSeedsLong = "getSeeds"
+    const val numSeedsLong = "numSeeds"
+    const val infileLong = "infile"
+    const val threadsLong = "threads"
 
     private fun createOptions() = Options()
         .addOption(genGraphOption())

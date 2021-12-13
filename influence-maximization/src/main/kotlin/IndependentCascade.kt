@@ -1,27 +1,34 @@
 package org.fpeterek.pa.im
 
 import org.fpeterek.pa.im.graph.Node
+import java.util.*
+import kotlin.collections.ArrayDeque
 import kotlin.random.Random
 
 class IndependentCascade(private val infected: Set<Node>) {
 
     private val newInfections = mutableSetOf<Node>()
+    private val queue: Queue<Node> = LinkedList()
 
-    private fun infectionChance() = Random.nextDouble(1.0);
+    private fun infectionChance() = Random.nextDouble(1.0)
 
-    private fun getSeedInfluence(seed: Node): Set<Node> = seed.links.asSequence()
+    private fun addInfection(node: Node) {
+        newInfections.add(node)
+        queue.add(node)
+    }
+
+    private fun runIteration() = queue.poll().links.asSequence()
         .filter { it.node !in infected && it.node !in newInfections }
-        .map {
-            when {
-                infectionChance() <= it.weight -> getInfluence(seed)
-                else -> null
-            }
-        }
-        .filterNotNull()
-        .fold(setOf()) { acc, it -> acc + it }
+        .filter { infectionChance() <= it.weight }
+        .forEach { addInfection(it.node) }
 
     fun getInfluence(seed: Node): Set<Node> {
-        newInfections.add(seed)
-        return getSeedInfluence(seed)
+        addInfection(seed)
+
+        while (queue.isNotEmpty()) {
+            runIteration()
+        }
+
+        return newInfections
     }
 }
