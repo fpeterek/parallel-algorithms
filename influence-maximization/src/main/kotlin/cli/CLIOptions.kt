@@ -58,6 +58,12 @@ object CLIOptions {
         type(Int::class.java)
     }
 
+    private fun maxLinksOption() = createOption(maxLinks, maxLinksLong) {
+        desc("Maximum number of outgoing links from a single node")
+        hasArg()
+        type(Int::class.java)
+    }
+
     const val generate = "g"
     const val randomGraphSize = "r"
     const val outfile = "o"
@@ -65,6 +71,7 @@ object CLIOptions {
     const val numSeeds = "n"
     const val infile = "i"
     const val threads = "t"
+    const val maxLinks = "l"
 
     const val generateLong = "generate"
     const val randomGraphSizeLong = "randomGraphSize"
@@ -73,6 +80,7 @@ object CLIOptions {
     const val numSeedsLong = "numSeeds"
     const val infileLong = "infile"
     const val threadsLong = "threads"
+    const val maxLinksLong = "maxLinks"
 
     private fun createOptions() = Options()
         .addOption(genGraphOption())
@@ -82,6 +90,7 @@ object CLIOptions {
         .addOption(numSeedsOption())
         .addOption(infileOption())
         .addOption(threadsOption())
+        .addOption(maxLinksOption())
 
     fun parse(args: Array<String>) = DefaultParser().parse(createOptions(), args)!!
 }

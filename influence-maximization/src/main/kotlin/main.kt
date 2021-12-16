@@ -9,21 +9,21 @@ import org.fpeterek.pa.im.graph.gen.GraphGenerator
 import org.fpeterek.pa.im.graph.io.GraphIO.loadGraphFromPath
 import org.fpeterek.pa.im.graph.io.GraphIO.save
 
-fun generate(size: Int, outfile: String) = GraphGenerator.gen(size).let {
-    it.save(outfile)
-}
+fun generate(size: Int, outfile: String, maxLinks: Int) =
+    GraphGenerator.gen(size, maxLinks).save(outfile)
 
 fun generate(cl: CommandLine) {
 
     val size = cl.getInt(CLIOptions.randomGraphSize)
     val outfile = cl.getString(CLIOptions.outfile)
+    val maxLinks = cl.getInt(CLIOptions.maxLinks)
 
     if (size < 0) {
         println("Invalid graph size")
     } else if (outfile.isBlank()) {
         println("Invalid graph size")
     } else {
-        generate(size, outfile)
+        generate(size, outfile, maxLinks)
     }
 }
 

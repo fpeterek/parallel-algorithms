@@ -9,10 +9,10 @@ import kotlin.math.round
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
-class GraphGenerator private constructor(private val size: Int) {
+class GraphGenerator private constructor(private val size: Int, private val maxLinks: Int) {
 
     companion object {
-        fun gen(size: Int) = GraphGenerator(size).genGraph()
+        fun gen(size: Int, maxLinks: Int) = GraphGenerator(size, maxLinks).genGraph()
     }
 
     private val linkSet = (0 until size).toMutableSet()
@@ -24,10 +24,8 @@ class GraphGenerator private constructor(private val size: Int) {
 
     private fun randomWeight() = round(logRand(1000.0)) / 1000
 
-    // Introduce bias towards lower link counts
-    // without completely removing the option of a node which
-    // links to every other node in the graph
-    private fun randLinkCount() = logRand(linkSet.size - 1.0).roundToInt()
+    private fun randLinkCount() = Random.nextInt(maxLinks + 1)
+        // logRand(linkSet.size - 1.0).roundToInt()
 
     private fun pickRandom(count: Int, excludeId: Int): List<Int> {
 
