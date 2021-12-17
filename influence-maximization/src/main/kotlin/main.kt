@@ -8,6 +8,7 @@ import org.fpeterek.pa.im.cli.CLIOptions.getString
 import org.fpeterek.pa.im.graph.gen.GraphGenerator
 import org.fpeterek.pa.im.graph.io.GraphIO.loadGraphFromPath
 import org.fpeterek.pa.im.graph.io.GraphIO.save
+import org.fpeterek.pa.im.seedcalculation.SeedCalculator
 
 fun generate(size: Int, outfile: String, maxLinks: Int) =
     GraphGenerator.gen(size, maxLinks).save(outfile)
@@ -31,7 +32,7 @@ fun getSeeds(infile: String, numSeeds: Int, threads: Int) {
 
     val graph = infile.loadGraphFromPath()
     println("Seeds:")
-    SeedCalculator.getSeeds(graph, numSeeds).forEach { println(it.id) }
+    SeedCalculator.getSeeds(graph, numSeeds, threads).forEach { println(it.id) }
 
 }
 

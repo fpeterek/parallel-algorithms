@@ -38,6 +38,7 @@ object GraphLoader {
         val nodeId = s1.first().toInt()
         val links = s1.last()
             .split(";")
+            .filter { it.isNotBlank() }
             .map {
                 val split = it.split(",", limit=2)
                 LinkPair(split.first().toInt(), split.last().toDouble())

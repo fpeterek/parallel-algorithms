@@ -1,8 +1,7 @@
-package org.fpeterek.pa.im
+package org.fpeterek.pa.im.infectionmodels
 
 import org.fpeterek.pa.im.graph.Node
 import java.util.*
-import kotlin.collections.ArrayDeque
 import kotlin.random.Random
 
 class IndependentCascade(private val infected: Set<Node>) {
