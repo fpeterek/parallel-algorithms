@@ -29,6 +29,7 @@ fun generate(cl: CommandLine) {
 fun getSeeds(infile: String, numSeeds: Int, threads: Int) =
     SeedCalculator
         .getSeeds(infile.loadGraphFromPath(), numSeeds, threads)
+        .map { it.id }
         .joinToString(separator=", ")
         .let { println("Seeds: $it") }
 

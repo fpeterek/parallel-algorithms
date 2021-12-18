@@ -1,6 +1,6 @@
 # K-means
 
-Parallel implementation of the K-means clustering algorithm.
+Parallelized implementation of the K-means clustering algorithm.
 Dataset is randomly generated for demonstration purposes.
 
 The preferred environment to run the script is GNU/Linux as the code
@@ -57,9 +57,9 @@ python3 kmeans --points 1000 --clusters 10 --attempts 10 --processes 4 --plot y
 ## Benchmarking the program
 
 The simplest way to measure the running time of the program is to use the `time`
-utility provided by shell. When benchmarking, make sure to set the `--plot` flag
-to false (for example, the value of `n` evaluates to false), or just leave it
-unset.
+utility provided by the Linux operating system, or, in some cases, your shell of choice. 
+When benchmarking, make sure to set the `--plot` flag to false (for example,
+the value of `n` evaluates to false), or just leave it unset.
 
 ```sh
 time python3 kmeans --points 100000 --clusters 7 --attempts 10 --processes 4

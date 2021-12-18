@@ -3,7 +3,7 @@
 ## Dependencies
 
 * CMake
-* A compiler supporting C++17 (including `iso646.h`)
+* A compiler supporting C++17 along with all of its keywords (thus, MSVC++ won't work)
 * `pthread`, if you wish to make use of the provided CMake config
     * Alternatively, you can modify the CMake config and provide your own multithreading solution
 
@@ -37,6 +37,8 @@ Where the following applies.
 # maximum number links heading from one node = 50
 ```
 
+You can, of course, feel free to modify the arguments to suit your needs.
+
 ## Running the program
 
 The path to the input graph is expected as the very first CLI argument.
@@ -49,12 +51,12 @@ The input graph always has to be specified.
 
 All other arguments are optional. Such arguments include, in this order:
 
-1. `iterations` - a positive integer specifying the number of Pageranks iterations to be performed
-2. `threads` - the number of threads to parallelize the Pageranks algorithm on
+1. `iterations` - a positive integer specifying the number of Pagerank iterations to be performed
+2. `threads` - the number of threads to parallelize the Pagerank algorithm on
 3. `loggingLevel` - self-explanatory, one of the following values
     * `verbose` - print the entire graph (not recommended for large graphs)
     * `minimal` - only print basic graph info and sum of all pageranks
-    * default (i.e. unspecified or invalid value) level logs the all of `minimal` as well as pageranks for all pages (nodes)
+    * default (i.e. unspecified or invalid value) level logs all of `minimal` as well as pageranks for all pages (nodes)
 
 I did not bother with proper parsing of CLI arguments, thus, should you wish to specify
 a certain argument, you must also specify all preceding arguments.
@@ -75,6 +77,12 @@ Graph {size=1000000, dangling=9951}
 
 Sum of pageranks: 1
 ./pagerank in/largest.graph 10 1 minimal  93.36s user 0.65s system 99% cpu 1:34.49 total
+
+❯ time ./pagerank in/largest.graph 10 4 minimal
+Graph {size=1000000, dangling=9951}
+
+Sum of pageranks: 1
+./pagerank in/largest.graph 10 4 minimal  50.60s user 0.53s system 167% cpu 30.588 total
 
 ❯ time ./pagerank in/largest.graph 10 10 minimal
 Graph {size=1000000, dangling=9951}
