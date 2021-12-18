@@ -22,6 +22,9 @@ Thus, we do not need to install the libraries locally.
 
 ### Generating a random dataset
 
+**This step is not necessary as the medium sized dataset is already
+included in the repository**
+
 We can generate a random dataset by passing the following arguments.
 
 ```sh
