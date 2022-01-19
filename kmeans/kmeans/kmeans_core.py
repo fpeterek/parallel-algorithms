@@ -1,3 +1,5 @@
+from typing import Optional
+
 import globals
 
 
@@ -11,7 +13,9 @@ def calc_dist(p1, p2) -> float:
     return dist_square(p1, p2) ** 0.5
 
 
-def calc_centroid(cluster: list[tuple[int, int]]) -> tuple[float, float]:
+def calc_centroid(cluster: list[tuple[int, int]]) -> Optional[tuple[float, float]]:
+    if not cluster:
+        return None
     sum_x = 0
     sum_y = 0
     for point in cluster:

@@ -7,13 +7,15 @@ from message import Message
 
 
 def calc_centroids_in_serial(clusters) -> list[tuple[float, float]]:
-    return [calc_centroid(c) for c in clusters]
+    centroids = map(lambda c: calc_centroid(c), clusters)
+    return [centroid for centroid in centroids if centroid is not None]
 
 
 def calc_centroids_in_parallel(clusters):
     for idx, cluster in enumerate(clusters):
         globals.in_queue.put(Message(msg_type=Message.Type.CENTROIDS, data=cluster, order=idx))
     centroids = [globals.out_queue.get() for _ in range(len(clusters))]
+    centroids = [msg for msg in centroids if msg.data is not None]
     centroids.sort(key=lambda msg: msg.order)
     return [msg.data for msg in centroids]
 
